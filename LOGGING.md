@@ -53,6 +53,11 @@ Se ha implementado un sistema completo de logging estructurado con correlation I
 - Diferentes niveles según tipo de error
 - Handler genérico para errores inesperados
 
+#### Security Filter (`ClientCertValidationFilter`)
+- Logs de validación de certificados
+- Tracking de intentos de acceso no autorizados
+- Información de IP del cliente
+
 ## Configuración
 
 ### application.properties
@@ -118,6 +123,11 @@ Todos los logs incluyen el correlation ID en el formato:
 - Tiempos de respuesta de base de datos
 - Identificación de cuellos de botella
 
+### 4. Seguridad
+- Logs de intentos de acceso no autorizados
+- Tracking de validación de certificados
+- Información de IP y User-Agent
+
 ## Archivos de Log Generados
 
 1. **ms-products.log**: Logs generales de la aplicación
@@ -129,11 +139,12 @@ Todos los logs incluyen el correlation ID en el formato:
 Para una request `GET /products/123`:
 
 1. **CorrelationIdFilter**: Genera correlation ID y log de inicio
-2. **ProductController**: Log de entrada con ID del producto
-3. **GetProductService**: Log de búsqueda en servicio
-4. **ProductMongoAdapter**: Logs de query MongoDB
-5. **ProductController**: Log de respuesta exitosa
-6. **CorrelationIdFilter**: Log de fin con duración total
+2. **ClientCertValidationFilter**: Valida certificado y log de éxito
+3. **ProductController**: Log de entrada con ID del producto
+4. **GetProductService**: Log de búsqueda en servicio
+5. **ProductMongoAdapter**: Logs de query MongoDB
+6. **ProductController**: Log de respuesta exitosa
+7. **CorrelationIdFilter**: Log de fin con duración total
 
 Todos los logs incluyen el mismo correlation ID, permitiendo rastrear la transacción completa.
 
@@ -144,7 +155,7 @@ Todos los logs incluyen el mismo correlation ID, permitiendo rastrear la transac
 <dependency>
     <groupId>net.logstash.logback</groupId>
     <artifactId>logstash-logback-encoder</artifactId>
-    <version>8.0</version>
+    <version>9.0</version>
 </dependency>
 ```
 
